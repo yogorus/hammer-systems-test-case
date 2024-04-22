@@ -27,13 +27,6 @@ services:
       POSTGRES_USER: "${USERNAME_DB}"
       POSTGRES_PASSWORD: "${PASSWORD_DB}"
 
-
-  #   # healthcheck:
-  #   #   test: ["CMD-SHELL", "pg_isready", "-U", "$USERNAME_DB", "-d", "${DATABASE_NAME}"]
-  #   #   interval: 10s
-  #   #   timeout: 30s
-  #   #   retries: 5
-  #   #   start_period: 80s
     expose:
       - 5432
 
