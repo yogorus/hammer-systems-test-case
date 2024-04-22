@@ -2,6 +2,7 @@ import string
 import random
 import api.models
 
+
 def generate_unique_code() -> str:
     chars = string.ascii_letters + string.digits
     code = ''.join(random.choice(chars) for _ in range(6))
