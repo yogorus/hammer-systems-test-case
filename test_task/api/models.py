@@ -10,7 +10,7 @@ from api.utils import generate_unique_code
 class User(models.Model):
     phone_number = PhoneNumberField(unique=True)
     is_activated = models.BooleanField(default=False)
-    invited_by = models.ForeignKey('Referral', related_name='invited_users', on_delete=models.CASCADE, blank=True, null=True)
+    invited_by = models.ForeignKey('Referral', related_name='invited_users', on_delete=models.SET_NULL, blank=True, null=True)
 
     @property
     def phone_number_str(self):
