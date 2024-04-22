@@ -52,7 +52,7 @@ class RegisterView(generics.CreateAPIView):
             cookie_phone_number = request.COOKIES['phone_number']
             cookie_verification_code = request.COOKIES['verification_code']
 
-            if cookie_verification_code == data['verification_code']:
+            if int(cookie_verification_code) == int(data['verification_code']):
 
                 # CREATE user
                 user_serializer = UserSerializer(data={'phone_number': cookie_phone_number})
