@@ -1,0 +1,1262 @@
+{
+	"info": {
+		"_postman_id": "2ef0345e-ce97-4703-9d78-c7b2793159bd",
+		"name": "hammer system test case",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28659066"
+	},
+	"item": [
+		{
+			"name": "Отправить номер для авторизации",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJSON = pm.response.json();\r",
+							"\r",
+							"// check that response status HTTP 200\r",
+							"pm.test(\"Status code is 200\", () => {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"postman.setEnvironmentVariable('phone_number', responseJSON.phone_number);\r",
+							"postman.setEnvironmentVariable('verification_code', responseJSON.verification_code);\r",
+							"// check that 'phone_number' from environment & response are equal\r",
+							"pm.test(\"Response contains 'phone_number' property\", () => {\r",
+							"  pm.expect(pm.environment.get('phone_number')).to.eql(responseJSON.phone_number);\r",
+							"});\r",
+							"pm.test(\"Response contains 'verification_code' property\", () => {\r",
+							"  pm.expect(pm.environment.get('verification_code')).to.eql(responseJSON.verification_code.toString());\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"phone_number\": \"+79000000000\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{LOCAL_URL}}/api/v1/phone_auth/",
+					"host": [
+						"{{LOCAL_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"phone_auth",
+						""
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Код получен",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"phone_number\": \"+79000000000\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{LOCAL_URL}}/api/v1/phone_auth/",
+							"host": [
+								"{{LOCAL_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"phone_auth",
+								""
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Mon, 22 Apr 2024 15:44:32 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "WSGIServer/0.2 CPython/3.10.14"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept, Cookie"
+						},
+						{
+							"key": "Allow",
+							"value": "POST, OPTIONS"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Length",
+							"value": "56"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Set-Cookie",
+							"value": "phone_number=+79000000000; expires=Mon, 22 Apr 2024 15:44:47 GMT; Max-Age=15; Path=/"
+						},
+						{
+							"key": "Set-Cookie",
+							"value": "verification_code=4608; expires=Mon, 22 Apr 2024 15:44:47 GMT; Max-Age=15; Path=/"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"verification_code\": 4608,\n    \"phone_number\": \"+79000000000\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Зарегистрировать пользователя",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJSON = pm.response.json();\r",
+							"\r",
+							"// check that response status HTTP 201 CREATED\r",
+							"pm.test(\"Status code is 201\", () => {\r",
+							"  pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"postman.setEnvironmentVariable('id', responseJSON.id);\r",
+							"postman.setEnvironmentVariable('referral_code', responseJSON.referral.code);\r",
+							"\r",
+							"// check that 'phone_number' from environment & response are equal\r",
+							"pm.test(\"Response contains 'phone_number' property\", () => {\r",
+							"  pm.expect(pm.environment.get('phone_number')).to.eql(responseJSON.phone_number);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"verification_code\": {{verification_code}}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{LOCAL_URL}}/api/v1/register/",
+					"host": [
+						"{{LOCAL_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"register",
+						""
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Пользователь зарегистрирован",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"verification_code\": {{verification_code}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{LOCAL_URL}}/api/v1/register/",
+							"host": [
+								"{{LOCAL_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"register",
+								""
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Mon, 22 Apr 2024 15:45:03 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "WSGIServer/0.2 CPython/3.10.14"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept, Cookie"
+						},
+						{
+							"key": "Allow",
+							"value": "POST, OPTIONS"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Length",
+							"value": "125"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 9,\n    \"phone_number\": \"+79000000000\",\n    \"referral\": {\n        \"code\": \"7SrGwl\",\n        \"invited_users\": []\n    },\n    \"is_activated\": false,\n    \"invited_by\": null\n}"
+				}
+			]
+		},
+		{
+			"name": "Просмотр пользователя",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJSON = pm.response.json();\r",
+							"\r",
+							"// check that response status HTTP 200 CREATED\r",
+							"pm.test(\"Status code is 200\", () => {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"// check that 'phone_number' from environment & response are equal\r",
+							"pm.test(\"Response contains 'phone_number' property\", () => {\r",
+							"  pm.expect(pm.environment.get('phone_number')).to.eql(responseJSON.phone_number);\r",
+							"});\r",
+							"// check that ref code from environment & response are equal\r",
+							"pm.test(\"Response contains 'phone_number' property\", () => {\r",
+							"  pm.expect(pm.environment.get('referral_code')).to.eql(responseJSON.referral.code);\r",
+							"});\r",
+							"postman.setEnvironmentVariable('phone_number', responseJSON.phone_number);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{LOCAL_URL}}/api/v1/user/{{id}}/",
+					"host": [
+						"{{LOCAL_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"{{id}}",
+						""
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Просмотр пользователя",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{LOCAL_URL}}/api/v1/user/{{id}}/",
+							"host": [
+								"{{LOCAL_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"{{id}}",
+								""
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Mon, 22 Apr 2024 16:03:28 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "WSGIServer/0.2 CPython/3.10.14"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept, Cookie"
+						},
+						{
+							"key": "Allow",
+							"value": "GET, PUT, DELETE, HEAD, OPTIONS"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Length",
+							"value": "126"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 10,\n    \"phone_number\": \"+79000000000\",\n    \"referral\": {\n        \"code\": \"zOx1AZ\",\n        \"invited_users\": []\n    },\n    \"is_activated\": false,\n    \"invited_by\": null\n}"
+				}
+			]
+		},
+		{
+			"name": "Попытка авторизации существующим номером",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJSON = pm.response.json();\r",
+							"\r",
+							"// check that response status HTTP 409 conflict\r",
+							"pm.test(\"Status code is 409\", () => {\r",
+							"  pm.response.to.have.status(409);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"phone_number\": \"{{phone_number}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{LOCAL_URL}}/api/v1/phone_auth/",
+					"host": [
+						"{{LOCAL_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"phone_auth",
+						""
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Попытка авторизации существующим номером",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"phone_number\": \"{{phone_number}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{LOCAL_URL}}/api/v1/phone_auth/",
+							"host": [
+								"{{LOCAL_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"phone_auth",
+								""
+							]
+						}
+					},
+					"status": "Conflict",
+					"code": 409,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Mon, 22 Apr 2024 16:15:35 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "WSGIServer/0.2 CPython/3.10.14"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept, Cookie"
+						},
+						{
+							"key": "Allow",
+							"value": "POST, OPTIONS"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Length",
+							"value": "50"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"user with this number already exists\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Попытка активации собственного кода",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJSON = pm.response.json();\r",
+							"\r",
+							"// check that response status HTTP 400 \r",
+							"pm.test(\"Status code is 400\", () => {\r",
+							"  pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"code\": \"{{referral_code}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{LOCAL_URL}}/api/v1/user/{{id}}/",
+					"host": [
+						"{{LOCAL_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"{{id}}",
+						""
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Попытка активации собственного кода",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"code\": \"{{referral_code}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{LOCAL_URL}}/api/v1/user/{{id}}/",
+							"host": [
+								"{{LOCAL_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"{{id}}",
+								""
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Mon, 22 Apr 2024 16:21:23 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "WSGIServer/0.2 CPython/3.10.14"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept, Cookie"
+						},
+						{
+							"key": "Allow",
+							"value": "GET, PUT, DELETE, HEAD, OPTIONS"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Length",
+							"value": "46"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"you can't activate your own code\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Отправить номер для авторизации второго пользователя",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJSON = pm.response.json();\r",
+							"\r",
+							"// check that response status HTTP 200\r",
+							"pm.test(\"Status code is 200\", () => {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"postman.setEnvironmentVariable('phone_number_2', responseJSON.phone_number);\r",
+							"postman.setEnvironmentVariable('verification_code', responseJSON.verification_code);\r",
+							"// check that 'phone_number' from environment & response are equal\r",
+							"pm.test(\"Response contains 'phone_number' property\", () => {\r",
+							"  pm.expect(pm.environment.get('phone_number_2')).to.eql(responseJSON.phone_number);\r",
+							"});\r",
+							"pm.test(\"Response contains 'verification_code' property\", () => {\r",
+							"  pm.expect(pm.environment.get('verification_code')).to.eql(responseJSON.verification_code.toString());\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"phone_number\": \"+79000000001\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{LOCAL_URL}}/api/v1/phone_auth/",
+					"host": [
+						"{{LOCAL_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"phone_auth",
+						""
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Код получен",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"phone_number\": \"+79000000001\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{LOCAL_URL}}/api/v1/phone_auth/",
+							"host": [
+								"{{LOCAL_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"phone_auth",
+								""
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Mon, 22 Apr 2024 17:43:06 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "WSGIServer/0.2 CPython/3.10.14"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept, Cookie"
+						},
+						{
+							"key": "Allow",
+							"value": "POST, OPTIONS"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Length",
+							"value": "56"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Set-Cookie",
+							"value": "phone_number=+79000000001; expires=Mon, 22 Apr 2024 17:43:20 GMT; Max-Age=15; Path=/"
+						},
+						{
+							"key": "Set-Cookie",
+							"value": "verification_code=8791; expires=Mon, 22 Apr 2024 17:43:21 GMT; Max-Age=15; Path=/"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"verification_code\": 8791,\n    \"phone_number\": \"+79000000001\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Зарегистрировать пользователя 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJSON = pm.response.json();\r",
+							"\r",
+							"// check that response status HTTP 201 CREATED\r",
+							"pm.test(\"Status code is 201\", () => {\r",
+							"  pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"postman.setEnvironmentVariable('id_2', responseJSON.id);\r",
+							"postman.setEnvironmentVariable('referral_code_2', responseJSON.referral.code);\r",
+							"\r",
+							"// check that 'phone_number' from environment & response are equal\r",
+							"pm.test(\"Response contains 'phone_number' property\", () => {\r",
+							"  pm.expect(pm.environment.get('phone_number_2')).to.eql(responseJSON.phone_number);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"verification_code\": {{verification_code}}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{LOCAL_URL}}/api/v1/register/",
+					"host": [
+						"{{LOCAL_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"register",
+						""
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Пользователь зарегистрирован",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"verification_code\": {{verification_code}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{LOCAL_URL}}/api/v1/register/",
+							"host": [
+								"{{LOCAL_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"register",
+								""
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Mon, 22 Apr 2024 15:45:03 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "WSGIServer/0.2 CPython/3.10.14"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept, Cookie"
+						},
+						{
+							"key": "Allow",
+							"value": "POST, OPTIONS"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Length",
+							"value": "125"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 9,\n    \"phone_number\": \"+79000000000\",\n    \"referral\": {\n        \"code\": \"7SrGwl\",\n        \"invited_users\": []\n    },\n    \"is_activated\": false,\n    \"invited_by\": null\n}"
+				}
+			]
+		},
+		{
+			"name": "Активировать код у второго пользователя",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJSON = pm.response.json();\r",
+							"\r",
+							"// check that response status HTTP 200 \r",
+							"pm.test(\"Status code is 200\", () => {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"User is activated equals true\", () => {\r",
+							"    pm.expect(true).to.eql(responseJSON.is_activated);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"User invited_by matches activated code\", () => {\r",
+							"    pm.expect(pm.environment.get('referral_code')).to.eql(responseJSON.invited_by);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"// pm.test(\"Invited users is not empty list\", () => {\r",
+							"//     pm.expect(1).to.eql(responseJSON.referral.invited_users.length);\r",
+							"// });\r",
+							"\r",
+							"// pm.test(\"Invited users have second users after activation\", () => {\r",
+							"//     pm.expect(pm.environment.get('phone_number_2')).to.eql(responseJSON.referral.invited_users[0]);    \r",
+							"// })"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"code\": \"{{referral_code}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{LOCAL_URL}}/api/v1/user/{{id_2}}/",
+					"host": [
+						"{{LOCAL_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"{{id_2}}",
+						""
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Попытка активации собственного кода",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"code\": \"{{referral_code}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{LOCAL_URL}}/api/v1/user/{{id}}/",
+							"host": [
+								"{{LOCAL_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"{{id}}",
+								""
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Mon, 22 Apr 2024 16:21:23 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "WSGIServer/0.2 CPython/3.10.14"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept, Cookie"
+						},
+						{
+							"key": "Allow",
+							"value": "GET, PUT, DELETE, HEAD, OPTIONS"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Length",
+							"value": "46"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"you can't activate your own code\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Просмотр пользователя 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJSON = pm.response.json();\r",
+							"\r",
+							"// check that response status HTTP 200 CREATED\r",
+							"pm.test(\"Status code is 200\", () => {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"// check that 'phone_number' from environment & response are equal\r",
+							"pm.test(\"Response contains 'phone_number' property\", () => {\r",
+							"  pm.expect(pm.environment.get('phone_number')).to.eql(responseJSON.phone_number);\r",
+							"});\r",
+							"// check that ref code from environment & response are equal\r",
+							"pm.test(\"Response contains 'phone_number' property\", () => {\r",
+							"  pm.expect(pm.environment.get('referral_code')).to.eql(responseJSON.referral.code);\r",
+							"});\r",
+							"postman.setEnvironmentVariable('phone_number', responseJSON.phone_number);\r",
+							"\r",
+							"pm.test(\"Invited users is not empty list\", () => {\r",
+							"    pm.expect(1).to.eql(responseJSON.referral.invited_users.length);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Invited users have second users after activation\", () => {\r",
+							"    pm.expect(pm.environment.get('phone_number_2')).to.eql(responseJSON.referral.invited_users[0]);    \r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{LOCAL_URL}}/api/v1/user/{{id}}/",
+					"host": [
+						"{{LOCAL_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"{{id}}",
+						""
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Просмотр пользователя",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{LOCAL_URL}}/api/v1/user/{{id}}/",
+							"host": [
+								"{{LOCAL_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"{{id}}",
+								""
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Mon, 22 Apr 2024 16:03:28 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "WSGIServer/0.2 CPython/3.10.14"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept, Cookie"
+						},
+						{
+							"key": "Allow",
+							"value": "GET, PUT, DELETE, HEAD, OPTIONS"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Length",
+							"value": "126"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 10,\n    \"phone_number\": \"+79000000000\",\n    \"referral\": {\n        \"code\": \"zOx1AZ\",\n        \"invited_users\": []\n    },\n    \"is_activated\": false,\n    \"invited_by\": null\n}"
+				}
+			]
+		},
+		{
+			"name": "Удалить пользователя 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJSON = pm.response;\r",
+							"\r",
+							"\r",
+							"pm.test(\"Success answer\", function() {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{LOCAL_URL}}/api/v1/user/{{id}}/",
+					"host": [
+						"{{LOCAL_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"{{id}}",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Удалить пользователя 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response;\r",
+							"\r",
+							"\r",
+							"pm.test(\"Success answer\", function() {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{LOCAL_URL}}/api/v1/user/{{id_2}}/",
+					"host": [
+						"{{LOCAL_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"{{id_2}}",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
